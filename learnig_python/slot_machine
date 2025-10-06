@@ -1,0 +1,71 @@
+import random
+def spin_row():
+    symbols=['🍒','🔔','🍋','🍉','⭐']
+    return[random.choice(symbols) for _ in range(3)]
+
+def print_row(row):
+    print("---------------")
+    print(" | ".join(row))
+    print("---------------")
+
+def get_payout(row,bet):
+    if row[0] == row[1] == row [2]:
+        if row[0] == '🍒':
+            return bet*1.5
+        elif row[0] == '🍋':
+            return bet*1.625
+        elif row[0] == '🍉':
+            return bet*1.75
+        elif row[0] == '🔔':
+            return bet*1.875
+        elif row[0] == '⭐':
+            return bet*2
+    return 0    
+
+def main():
+    balance = 100
+    print("Welcome to the Slot Machine")
+    print("Symbols : 🍒 🔔 🍋 🍉 ⭐")
+
+    while balance >0:
+        print(f"your current balance is ${balance:.2f}")
+
+        bet = input("Place your bet amount ")
+
+        if not bet.isdigit():
+            print("Please enter valid amount")
+            continue
+
+        bet = int(bet)
+
+        if bet > balance:
+            print("Insufficient funds")
+            continue
+
+        if bet <= 0:
+            print("Bet should be greater than 0")   
+            continue
+
+        balance -= bet
+
+        row = spin_row()
+        print("Spinning...\n")
+        print_row(row)
+
+        payout = get_payout(row,bet)
+
+        if payout > 0:
+            print(f"Congratulation You WON ${payout} ")
+        else:
+            print("Try Again")    
+
+        balance += payout    
+
+        play_again = input("Want to play again (Y/N): ").upper()
+
+        if not play_again == 'Y':
+            break
+    print(f"Game Over. Your Final Amount is ${balance} ")    
+
+if __name__ == "__main__":
+    main()
